@@ -1,0 +1,67 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: 'IBM Plex Mono', monospace;
+    background-color:rgb(204, 209, 228);
+}
+
+#header {
+    background: rgb(105,133,255);
+    background: radial-gradient(circle, rgb(132, 171, 255) 0%, rgb(87, 143, 255) 100%);
+    border: 6px double black;
+}
+
+#registroDeLlaves {
+    background-color: lightsteelblue;
+}
+
+#divTabla {
+    overflow:scroll;
+    height:250px;
+    width: 98%;
+}
+
+#divTabla table {
+    text-align: end;
+    border: 2px solid black;
+    caption-side: top;
+    white-space: nowrap;
+}
+
+#divTabla table caption {
+    border: none;
+}
+
+#divTabla table * {
+    border: 2px solid black;
+    padding: 0px 5px;
+    border-collapse: collapse;
+}
+
+#divTabla table thead {
+    text-align: center;
+}
+
+.valorDelPc {
+    background-color: cornflowerblue;
+}
+
+#divVerRegistros {
+    position: absolute;
+    z-index: 1;
+    bottom: 5%;
+    width: fit-content;
+    height: fit-content;
+    background-color: lightsteelblue;
+    border: 5px solid black;
+    border-radius: 10px;
+}
+
+#divTabla table thead th {
+    position: sticky;
+    top: 0;
+    background-color: lightslategray;
+}

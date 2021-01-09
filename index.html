@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blue</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;1,100&display=swap"
+        rel="stylesheet">
+    <!-- Css Personalizado -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Script de la Blue -->
+    <script src="blue.js"></script>
+</head>
+
+<body>
+    <div class="container-lg">
+
+        <header id="header" class="row text-center">
+            <h1 class="my-2 fw-bold">Máquina Elemental</h1>
+        </header>
+
+        <section class="row my-2 justify-content-evenly">
+            <button id="botonStart" type="button" class="col-3 btn btn-sm btn-outline-primary disabled">START</button>
+            <button id="botonStop" type="button" class="col-3 btn btn-sm btn-outline-primary disabled">STOP</button>
+            <button id="botonExamine" type="button" class="col-3 btn btn-sm btn-outline-primary disabled">EXAMINE</button>
+        </section>
+
+        <section class="row my-2 justify-content-evenly">
+            <button id="botonReset" type="button" class="col-3 btn btn-sm btn-outline-danger">RESET</button>
+            <button id="botonLoadPc" type="button" class="col-3 btn btn-sm btn-outline-primary">LOAD PC</button>
+            <button id="botonDeposite" type="button" class="col-3 btn btn-sm btn-outline-primary">DEPOSITE</button>
+        </section>
+
+        <section id="registroDeLlaves" class="row py-3 text-center">
+
+            <!-- Botones para elegir el tipo de entrada -->
+            <div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" class="btn-check" name="btnradio" id="botonBinario" autocomplete="off" checked>
+                <label class="btn btn-outline-secondary" for="botonBinario">Binario</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="botonOctal" autocomplete="off">
+                <label class="btn btn-outline-secondary disabled" for="botonOctal">Octal</label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="botonMnemonico" autocomplete="off">
+                <label class="btn btn-outline-secondary disabled" for="botonMnemonico">Mnemónico</label>
+            </div>
+
+            <!-- Para ingresar valores al SR -->
+            <div class="pt-1">
+                <label for="SR">SR</label>
+                <input type="text" name="name-placeholder" id="SR" class="form-control" aria-describedby="aviso-sr"
+                    autocomplete="off" placeholder="número en binario" maxlength="16" autofocus>
+                <button id="limpiarSR" type="button" class="btn btn-danger btn-sm mt-2">Limpiar SR</button>
+            </div>
+
+            <div class="pt-1">
+                <label for="aviso" class="col-form-label">Avisos</label>
+                <input type="text" name="aviso" readonly class="form-control" id="aviso" size="5px">
+            </div>
+
+        </section>
+
+        <!-- botón para ejecutar paso a paso -->
+        <section class="text-center py-2">
+            <button id="pasoAPaso" type="button" class="btn btn-sm btn-success">Ejecutar paso a paso</button>
+        </section>
+
+        <section id="memoriaPrincipal" class="row my-2 text-center">
+
+            <div class="col-12 py-2 fw-bold fs-6">Memoria Principal</div>
+
+            <div id="divTabla" class="col-12 px-2 mb-2">
+                <table>
+
+                    <caption class="small text-start">Desliza para ver toda la memoria</caption>
+
+                    <thead>
+                        <tr class="bg-light">
+                            <th scope="col">dir</th>
+                            <th scope="col">bin</th>
+                            <th scope="col">oct</th>
+                            <th scope="col">mne</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbodyMemoria" class="text-end"></tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+        <section class="row">
+
+            <div class="col-12 mt-2 mb-4 text-center">
+                <button id="verRegistros" type="button" class="btn btn-sm btn-primary">ver registros</button>
+            </div>
+
+            <div id="divVerRegistros" class="d-none">
+
+                <button id="cerrarRegistros" type="button" class="btn btn-sm btn-danger my-2">Cerrar</button>
+                <table class="table table-sm table-bordered table-striped table-light">
+                    <thead>
+                        <tr class="text-center">
+                            <th></th>
+                            <th>bin</th>
+                            <th>oct</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyTablaRegistros" class="text-end">
+                        <tr>
+                            <td class="text-start">ACC</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">IR</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">PC</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Y</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">Z</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">ALU</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">MAR</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">MBR</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start">SR</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Script de Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
