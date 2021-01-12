@@ -232,10 +232,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return dir;
     };
 
-    // Comprobar si numero está en base n
+    // Comprobar si número está en base 2
     function comprobarBaseDos(numero) {
         for (let i = 0; i < numero.length; i++) {
             if (numero.charAt(i) != '0' && numero.charAt(i) != '1') {
+                return false;
+            } else if (i == numero.length - 1) {
+                return true;
+            }
+        }
+    }
+
+    // Comprobar si un número está en base 8
+    function comprobarBaseOctal(numero) {
+        for (let i = 0; i < numero.length; i++) {
+            if (numero.charAt(i) != '0' && numero.charAt(i) != '1' && numero.charAt(i) != '2' && numero.charAt(i) != '3' && numero.charAt(i) != '4' && numero.charAt(i) != '5' && numero.charAt(i) != '6' && numero.charAt(i) != '7') {
                 return false;
             } else if (i == numero.length - 1) {
                 return true;
@@ -275,6 +286,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     /* MODIFICACIONES DEL DOM */
+
+    // Variable para ver cuál entrada del SR está activa
+    let tipoEntrada = "bin";    //bin, oct, mne
 
     // Memoria principal
     for (let i = 0; i < um.memoria.length; i++) {
@@ -337,23 +351,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Botón deposite
     document.querySelector("#botonDeposite").onclick = () => {
-        ues.sr = completarCeros(document.querySelector("#SR").value, 16);
-        if (comprobarBaseDos(ues.sr)) {
-            let aOctal = completarCeros((parseInt(ues.sr, 2)).toString(8), 6);
-            let tbodyMemoria = document.querySelector('#tbodyMemoria').rows[parseInt(cpu.pc, 2)];
-            tbodyMemoria.cells[1].innerHTML = `${ues.sr}`;
-            tbodyMemoria.cells[2].innerHTML = `${aOctal}`;
-            tbodyMemoria.cells[3].innerHTML = `${verMnemonico((ues.sr).substring(0, 4))} ${aOctal.substring(2)}`;
-    
-            document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "";
-            um.escribirMemoria(cpu.pc, ues.sr);
-            document.querySelector("#aviso").value = "SR --> memoria[PC]";
-            cpu.incrementarPc();
-    
-            document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "valorDelPc";
-        } else {
-            document.querySelector("#aviso").value = "Ingrese un número en base 2!";
-            document.querySelector("#SR").value = "";
+
+        if (tipoEntrada == "bin") {
+            let aux = completarCeros(document.querySelector("#SR").value, 16);
+            if (comprobarBaseDos(aux)) {
+                ues.sr = completarCeros(document.querySelector("#SR").value, 16);
+                let aOctal = completarCeros((parseInt(ues.sr, 2)).toString(8), 6);
+                let tbodyMemoria = document.querySelector('#tbodyMemoria').rows[parseInt(cpu.pc, 2)];
+                tbodyMemoria.cells[1].innerHTML = `${ues.sr}`;
+                tbodyMemoria.cells[2].innerHTML = `${aOctal}`;
+                tbodyMemoria.cells[3].innerHTML = `${verMnemonico((ues.sr).substring(0, 4))} ${aOctal.substring(2)}`;
+
+                document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "";
+                um.escribirMemoria(cpu.pc, ues.sr);
+                document.querySelector("#aviso").value = "SR --> memoria[PC]";
+                cpu.incrementarPc();
+
+                document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "valorDelPc";
+            } else {
+                document.querySelector("#aviso").value = "Ingrese un número en base 2!";
+                document.querySelector("#SR").value = "";
+            }
+        } else if (tipoEntrada == "oct") {
+            let aux = document.querySelector("#SR").value;
+            if (comprobarBaseOctal(aux) && (aux.charAt(0) == '0' || aux.charAt(0) == '1')) {
+                let aBinario = parseInt(aux, 8).toString(2);
+                ues.sr = completarCeros(aBinario, 16);
+
+                let tbodyMemoria = document.querySelector('#tbodyMemoria').rows[parseInt(cpu.pc, 2)];
+                tbodyMemoria.cells[1].innerHTML = `${ues.sr}`;
+                tbodyMemoria.cells[2].innerHTML = `${completarCeros(aux, 6)}`;
+                tbodyMemoria.cells[3].innerHTML = `${verMnemonico((ues.sr).substring(0, 4))} ${aux.substring(2)}`;
+
+                document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "";
+                um.escribirMemoria(cpu.pc, ues.sr);
+                document.querySelector("#aviso").value = "SR --> memoria[PC]";
+                cpu.incrementarPc();
+
+                document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "valorDelPc";
+            } else {
+                if (aux.charAt(0) != '0' && aux.charAt(0) != '1') {
+                    document.querySelector("#aviso").value = "Primer número debe ser 0 o 1";
+                    document.querySelector("#SR").value = "";
+                } else {
+                    document.querySelector("#aviso").value = "Ingrese un número en base 8!";
+                    document.querySelector("#SR").value = "";
+                }
+            }
+        } else if (tipoEntrada == "mne") {
+            let aux = document.querySelector("#mneSelect").value;
+            let aux1 = completarCeros(document.querySelector("#SRMnemonico").value, 4);
+            if (aux != "" && comprobarBaseOctal(aux1)) {
+                let aBinario = completarCeros(parseInt(aux1, 8).toString(2), 12);
+                ues.sr = aux + aBinario;
+                let aux3 = completarCeros(parseInt(aux, 2).toString(8), 2) + aux1;
+
+                let tbodyMemoria = document.querySelector('#tbodyMemoria').rows[parseInt(cpu.pc, 2)];
+                tbodyMemoria.cells[1].innerHTML = `${ues.sr}`;
+                tbodyMemoria.cells[2].innerHTML = `${aux3}`;
+                tbodyMemoria.cells[3].innerHTML = `${verMnemonico((ues.sr).substring(0, 4))} ${aux1}`;
+
+                document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "";
+                um.escribirMemoria(cpu.pc, ues.sr);
+                document.querySelector("#aviso").value = "SR --> memoria[PC]";
+                cpu.incrementarPc();
+
+                document.querySelector("#tbodyMemoria").rows[parseInt(cpu.pc, 2)].className = "valorDelPc";
+            } else {
+                if (aux == "") {
+                    document.querySelector("#aviso").value = "Seleccione una instrucción!";
+                } else {
+                    document.querySelector("#aviso").value = "Ingrese un número en base 8!";
+                }
+            }
         }
     }
 
@@ -429,7 +499,33 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector("#divVerRegistros").className = "d-none"
     }
 
+    // Botón para limpiar el SR
     document.querySelector("#limpiarSR").onclick = () => {
         document.querySelector("#SR").value = "";
+        document.querySelector("#SRMnemonico").value = "";
+    }
+
+
+    // Botón Binario
+    document.querySelector("#botonBinario").onclick = () => {
+        tipoEntrada = "bin";
+        document.querySelector("#entradaMnemonico").className = "row d-none";
+        document.querySelector("#SR").className = "form-control";
+        document.querySelector("#SR").setAttribute("maxlength", "16");
+        document.querySelector("#SR").setAttribute("placeholder", "número en binario");
+    }
+    // Botón Octal
+    document.querySelector("#botonOctal").onclick = () => {
+        tipoEntrada = "oct";
+        document.querySelector("#entradaMnemonico").className = "row d-none";
+        document.querySelector("#SR").className = "form-control";
+        document.querySelector("#SR").setAttribute("maxlength", "6");
+        document.querySelector("#SR").setAttribute("placeholder", "número en octal");
+    }
+    // Botón Mnemónico
+    document.querySelector("#botonMnemonico").onclick = () => {
+        tipoEntrada = "mne";
+        document.querySelector("#entradaMnemonico").className = "row";
+        document.querySelector("#SR").className = "form-control d-none";
     }
 })

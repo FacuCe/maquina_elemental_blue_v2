@@ -29,7 +29,8 @@
         <section class="row my-2 justify-content-evenly">
             <button id="botonStart" type="button" class="col-3 btn btn-sm btn-outline-primary disabled">START</button>
             <button id="botonStop" type="button" class="col-3 btn btn-sm btn-outline-primary disabled">STOP</button>
-            <button id="botonExamine" type="button" class="col-3 btn btn-sm btn-outline-primary disabled">EXAMINE</button>
+            <button id="botonExamine" type="button"
+                class="col-3 btn btn-sm btn-outline-primary disabled">EXAMINE</button>
         </section>
 
         <section class="row my-2 justify-content-evenly">
@@ -38,25 +39,58 @@
             <button id="botonDeposite" type="button" class="col-3 btn btn-sm btn-outline-primary">DEPOSITE</button>
         </section>
 
-        <section id="registroDeLlaves" class="row py-3 text-center">
+        <section id="registroDeLlaves" class="row py-2 text-center">
 
             <!-- Botones para elegir el tipo de entrada -->
-            <div class="btn-group btn-group-sm" role="group" aria-label="Basic radio toggle button group">
+            <div class="small py-1">Formato del SR</div>
+            <div class="btn-group btn-group-sm py-1" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="botonBinario" autocomplete="off" checked>
                 <label class="btn btn-outline-secondary" for="botonBinario">Binario</label>
 
                 <input type="radio" class="btn-check" name="btnradio" id="botonOctal" autocomplete="off">
-                <label class="btn btn-outline-secondary disabled" for="botonOctal">Octal</label>
+                <label class="btn btn-outline-secondary" for="botonOctal">Octal</label>
 
                 <input type="radio" class="btn-check" name="btnradio" id="botonMnemonico" autocomplete="off">
-                <label class="btn btn-outline-secondary disabled" for="botonMnemonico">Mnemónico</label>
+                <label class="btn btn-outline-secondary" for="botonMnemonico">Mnemónico</label>
             </div>
 
             <!-- Para ingresar valores al SR -->
-            <div class="pt-1">
-                <label for="SR">SR</label>
-                <input type="text" name="name-placeholder" id="SR" class="form-control" aria-describedby="aviso-sr"
-                    autocomplete="off" placeholder="número en binario" maxlength="16" autofocus>
+            <div class="py-1">
+
+                <!-- binario y octal -->
+                <input type="text" id="SR" class="form-control" autocomplete="off" placeholder="número en binario"
+                    maxlength="16" autofocus>
+
+                <!-- mnemónico -->
+                <div id="entradaMnemonico" class="row d-none">
+                    <span class="small">Desliza para ver las instrucciones</span>
+                    <div class="col-4">
+                        <select id="mneSelect" class="form-select" size="3">
+                            <option value="0000" selected>HLT</option>
+                            <option value="0001">ADD</option>
+                            <option value="0010">XOR</option>
+                            <option value="0011">AND</option>
+                            <option value="0100">IOR</option>
+                            <option value="0101">NOT</option>
+                            <option value="0110">LDA</option>
+                            <option value="0111">STA</option>
+                            <option value="1000">SRJ</option>
+                            <option value="1001">JMA</option>
+                            <option value="1010">JMP</option>
+                            <option value="1011" disabled>INP</option>
+                            <option value="1100" disabled>OUT</option>
+                            <option value="1101">RAL</option>
+                            <option value="1110">CSA</option>
+                            <option value="1111">NOP</option>
+                        </select>
+                    </div>
+
+                    <div class="col">
+                        <input type="text" id="SRMnemonico" class="form-control" aria-describedby="aviso-sr"
+                            autocomplete="off" placeholder="dirección octal" maxlength="4" autofocus>
+                    </div>
+                </div>
+
                 <button id="limpiarSR" type="button" class="btn btn-danger btn-sm mt-2">Limpiar SR</button>
             </div>
 
